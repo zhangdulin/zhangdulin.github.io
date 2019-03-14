@@ -6,16 +6,16 @@
   <meta name="author" content="Dong Yuanxin">
   
   
-  <title>归档: 2019/3 | Hexo</title>
+  <title>我们日常生活中的 iBeacon | Hexo</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Hexo, Theme-AD">
+    <meta name="keywords" content="技术,">
   
 
   
-  <meta name="description" content="张渡林的小站">
+  <meta name="description" content="iBeaco n技术调研与知识分享">
 
   
 
@@ -40,7 +40,7 @@
     welcome: {"enable":true,"interval":30},
     start_time: "2018-02-10",
     passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
-    is_post: false,
+    is_post: true,
     lock: false,
     author: "Dong Yuanxin",
     share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
@@ -158,43 +158,107 @@
 </nav>
 <div id="site-process"></div>
     <main>
-      <div class="timeline">
-  <h2 class="timeline-title">归档: 23篇</h2>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2016-04-06
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    我们日常生活中的 iBeacon
+  </h1>
   
-    
-      <h3 class="timeline-subtitle">2019</h3>
-    
-    <div class="timeline-item">
-      <time>2019-03-14</time>
-      <a target="_self" href="/passages/2016-07-05-MachineLearning_introduce/"></a>
-    </div>
+  <article class="passage-article">
+    <p>　　随着低功耗蓝牙的推出，iBeacon 的使用是越来越广泛了，如：微信的附近摇一摇功能，又或者是当你进入大型商场，一些店铺给你推送通知，VR 场景识别等等，这些表示 iBeacon 已经与我们的生活精密相连了。  </p>
+<h4 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h4><ul>
+<li><p><strong>概念：</strong> iBeacon 是 iOS7 后苹果出的一项新技术，支持蓝牙4.0(或以上)的 iOS 设备，工作方式是低功耗蓝牙（Bluetooth Low Energy），向周围发送自己特有的ID，一个 <code>iBeacon</code> 硬件设备在不做任何处理的情况下一般可使用两三年左右。</p>
+</li>
+<li><p>iBeacon 的形状多种多样，大致如下图。<br><img src="/images/posts/iBeacon/iBeacon.png" alt></p>
+</li>
+</ul>
+<h4 id="目前哪些地方有-iBeacon："><a href="#目前哪些地方有-iBeacon：" class="headerlink" title="目前哪些地方有 iBeacon："></a>目前哪些地方有 iBeacon：</h4><ul>
+<li>1、微信摇一摇：使用微信的人应该都知道微信有一个 <code>周边摇一摇</code> 功能， 使用的就是 iBeacon 技术。 很多餐馆都部有 iBeacon 的点，如果你想验证直接监测微信的 iBeaconUUID：FDA50693-A4E2-4FB1-AFCF-C6EB07647825。  </li>
+<li>2、走进某个商场时，忽然手机里推出一个通知，也是使用 iBeacon 技术。   </li>
+<li>3、帝都的地跌站大部分也有微信 UUID 的 iBeacon 发射器，具体是用来做什么的还不是慢清楚。  </li>
+<li>4、iBeacon 还可实现地理围栏、室内定位等功能。</li>
+</ul>
+<h4 id="iBeacon-技术"><a href="#iBeacon-技术" class="headerlink" title="iBeacon 技术"></a>iBeacon 技术</h4><p>　　Apple的 <code>CoreLocation.frame</code> 里把iBeacon封装成了一个 <code>CLBeacon</code> 类，<code>CLBeacon</code> 大致有下面几个属性组成：<code>Major</code> 、<code>Minor</code> 、 <code>proximity</code> 、 <code>rssi</code> 、 <code>accuracy</code> 。   </p>
+<h4 id="开发者如何使用-iBeacopn"><a href="#开发者如何使用-iBeacopn" class="headerlink" title="开发者如何使用 iBeacopn?:"></a>开发者如何使用 iBeacopn?:</h4><ul>
+<li>1、用户需要添加 <code>CoreLocation.framework</code> ，App 才具备定位的功能。</li>
+<li>2、App 开发者需要开启定位功能需要配置：在 <code>Xcode</code> 的 <code>info.plist</code> 里面添加 <code>NSLocationAlwaysUsageDescription</code>(允许后台访问位置信息) 或 <code>requestWhenInUseAuthorization</code>(允许使用时访问位置信息) 字段。（iOS7后该添加了该字段应用才会弹出 `是否允许应用访问用户的位置信息）。</li>
+</ul>
+<p>创建和注册一个beacon区域   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)registerBeaconRegionWithUUID:(NSUUID *)proximityUUID andIdentifier:(NSString *)identifier</span><br><span class="line">&#123;</span><br><span class="line">    CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:identifier];</span><br><span class="line">    </span><br><span class="line">    [manager startMonitoringForRegion:beaconRegion];</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">当接受到 iBeacon 信号时回调 ，beacons 里面装了信号的对象，可能同时出现多个信号。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>(void)locationManager:(CLLocationManager <em>)manager didRangeBeacons:(NSArray </em>)beacons inRegion:(CLBeaconRegion *)region<br>{</li>
+</ul>
+<p>}<br><code>`</code> </p>
+<p>Note: <a href="https://developer.apple.com/library/prerelease/content/samplecode/AirLocate/Introduction/Intro.html" target="_blank" rel="noopener">苹果iBeacon官方代码例子</a>。    </p>
+<h4 id="iBeacon-硬件设备条件："><a href="#iBeacon-硬件设备条件：" class="headerlink" title="iBeacon 硬件设备条件："></a>iBeacon 硬件设备条件：</h4><ul>
+<li>用户设备 iOS7 或更新操作系统。</li>
+<li>用户蓝牙设备4.0或更新。</li>
+<li>用户蓝牙设备必须开启。</li>
+<li>用户设备定位服务必须开启，允许应用访问位置信息。</li>
+</ul>
+<h4 id="iBeacon-能唤醒应用"><a href="#iBeacon-能唤醒应用" class="headerlink" title="iBeacon 能唤醒应用"></a>iBeacon 能唤醒应用</h4><ul>
+<li>前提：App 具备上面使用 iBeacon 的功能，并且允许后台访问位置信息。</li>
+<li>现象：App 能被 iBeacon 信号唤醒，即使 App 已经被用户手动杀死掉了，App 也能被 iBeacon 技术唤醒，并且能执行一系列操作。</li>
+<li>影响：导致 App 用户在并没有使用 <code>App</code> 的情况下, <code>App</code> 有了长达几个小时的后台使用时长。</li>
+</ul>
+<p><br></p>
+<p>转载请注明：<a href="http://baixin" target="_blank" rel="noopener">潘柏信的博客</a> » <a href="http://baixin.io/2016/04/iBeacon/" target="_blank" rel="noopener">点击阅读原文</a>      </p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#简介："><span class="toc-text">简介：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#目前哪些地方有-iBeacon："><span class="toc-text">目前哪些地方有 iBeacon：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#iBeacon-技术"><span class="toc-text">iBeacon 技术</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#开发者如何使用-iBeacopn"><span class="toc-text">开发者如何使用 iBeacopn?:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#iBeacon-硬件设备条件："><span class="toc-text">iBeacon 硬件设备条件：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#iBeacon-能唤醒应用"><span class="toc-text">iBeacon 能唤醒应用</span></a></li></ol>
+  </div>
+</aside>
   
-    
-    <div class="timeline-item">
-      <time>2019-03-14</time>
-      <a target="_self" href="/passages/2016-06-12-HEXO_Advanced/">HEXO进阶</a>
-    </div>
+    <aside class="passage-copyright">
+      <div>本文作者: dulinyu</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://yoursite.com/passages/2016-04-07-iBeacon/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
   
-    
-    <div class="timeline-item">
-      <time>2019-03-14</time>
-      <a target="_self" href="/passages/2016-04-02-CocoaPod_Use/"></a>
-    </div>
   
+    <div class="passage-tags">
+     
+      <a href="/tags/技术/"><i class="fa fa-tags"></i>技术</a>
     
-    <div class="timeline-item">
-      <time>2019-03-14</time>
-      <a target="_self" href="/passages/2015-08-25-HEXO搭建个人博客/"></a>
-    </div>
-  
-    
-    <div class="timeline-item">
-      <time>2019-03-04</time>
-      <a target="_self" href="/passages/hello-world/">Hello World</a>
     </div>
   
 </div>
+
     </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
     
     <div class="site-footer-wrapper">
   <footer class="site-footer">
@@ -295,19 +359,19 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2016-06-02-Develop_Tool/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2016-01-09-iOS_OTA/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
   <div class="bottom-bar-right">
-    <a href="javascript:void(0);" data-enable="false" id="site-toc-show-btn">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
       <i class="fa fa-bars"></i>
     </a>
     
-      <a href="javascript:void(0);" data-enable="false">
+      <a href="#site-comment" data-enable="true">
         <i class="fa fa-commenting"></i>
       </a>
     

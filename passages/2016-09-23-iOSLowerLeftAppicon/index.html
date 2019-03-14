@@ -6,12 +6,12 @@
   <meta name="author" content="Dong Yuanxin">
   
   
-  <title>归档: 2019/3 | Hexo</title>
+  <title>iOS设备左下角出现Appicon | Hexo</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Hexo, Theme-AD">
+    <meta name="keywords" content="iOS,">
   
 
   
@@ -40,7 +40,7 @@
     welcome: {"enable":true,"interval":30},
     start_time: "2018-02-10",
     passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
-    is_post: false,
+    is_post: true,
     lock: false,
     author: "Dong Yuanxin",
     share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
@@ -158,43 +158,103 @@
 </nav>
 <div id="site-process"></div>
     <main>
-      <div class="timeline">
-  <h2 class="timeline-title">归档: 23篇</h2>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2016-09-23
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    iOS设备左下角出现Appicon
+  </h1>
   
-    
-      <h3 class="timeline-subtitle">2019</h3>
-    
-    <div class="timeline-item">
-      <time>2019-03-14</time>
-      <a target="_self" href="/passages/2016-07-05-MachineLearning_introduce/"></a>
-    </div>
+  <article class="passage-article">
+    <p>最近发现我设备锁屏后，按Home屏幕变亮的时候，左下角出现一个灰色的Appicon （应用图标），关于这个应用图标的出现做了一些调研，下面是应用图标出现的几种情况。</p>
+<p>图一 iOS 系统自带的 App icon , 图二 第三方 App icon , 图三 通过 iBeacon 信号激活的 demo icon</p>
+<p><img src="/images/posts/icon/image01.png" alt></p>
+<h2 id="结论：有三种情况导致设备的左下角出现灰色的-App-icon"><a href="#结论：有三种情况导致设备的左下角出现灰色的-App-icon" class="headerlink" title="结论：有三种情况导致设备的左下角出现灰色的 App icon"></a>结论：有三种情况导致设备的左下角出现灰色的 App icon</h2><h3 id="1、AppStore根据地点对App-推荐"><a href="#1、AppStore根据地点对App-推荐" class="headerlink" title="1、AppStore根据地点对App 推荐"></a>1、AppStore根据地点对App 推荐</h3><ul>
+<li><strong>简介</strong> <ul>
+<li>iOS 8会基于你的位置在锁屏界面上展示一个app快捷打开方式。比如你正在星巴克附近，那iOS 8会在锁屏界面上展示星巴克应用的icon，方便你快速打开。一些用户也表示会在锁屏界面收到app推荐，比如你在Costco和Apple Store附近，即便你之前没有安装过这些应用。   </li>
+</ul>
+</li>
+</ul>
+<h3 id="2、App实现了handoff功能"><a href="#2、App实现了handoff功能" class="headerlink" title="2、App实现了handoff功能"></a>2、App实现了handoff功能</h3><ul>
+<li><strong><a href="https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/Handoff/HandoffFundamentals/HandoffFundamentals.html" target="_blank" rel="noopener">handoff简介</a>：</strong><ul>
+<li><code>OS X 10.10 Yosemite</code> 新增了一个酷炫的功能 “Hand Off”，打开这个功能之后，用户可以在 Mac 上对 iPad 和 iPhone 进行操作，比如能够编写 iPhone 上未完成的邮件，并且可以在Mac上打开 iPhone 的热点等等， Mac 的 Hand Off 功能只能识别 Mac 周围的 iPhone 手机。      </li>
+</ul>
+</li>
+<li><strong>handoff有几个要求：</strong><ul>
+<li>1 两台设备都要登录同一个 iCloud 账号。</li>
+<li>2 两台设备上的app有相同的 TeamID 。</li>
+<li>3 锁屏（或dock）设备上的app支持的 <code>NSUserActivityTypes</code> 包含活动设备上的app当前的UserActivityType。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3、App内有iBeacon信号接收功能，App被iBeacon信号唤醒"><a href="#3、App内有iBeacon信号接收功能，App被iBeacon信号唤醒" class="headerlink" title="3、App内有iBeacon信号接收功能，App被iBeacon信号唤醒"></a>3、App内有iBeacon信号接收功能，App被iBeacon信号唤醒</h3><ul>
+<li><strong><a href="https://developer.apple.com/ibeacon/" target="_blank" rel="noopener">iBeacon简介</a></strong>：<ul>
+<li>是苹果公司2013年9月发布的移动设备用OS（iOS7）上配备的新功能。工作原理类似之前的蓝牙技术，由 <code>iBeacon</code> 发射信号，iOS设备定位接受，反馈信号。根据这项简单的定位技术可以做出许多的相应技术应用,如：<code>室内定位</code> 、<code>商品推荐</code> 、<code>微信摇一摇</code> 等。</li>
+</ul>
+</li>
+<li><strong>App icon出现的原因</strong>：<ul>
+<li><code>iBeacon</code> 具备后台定位的能力，只要用户把蓝牙(4.0或以后)开启 和 允许 App 访问位置信息。在有被 App 检测的 <code>iBeacon</code> 出现时，如果设备是锁屏状态，设备的左下角就会出现该 App 的 icon 。</li>
+</ul>
+</li>
+</ul>
+<p>参考链接:<br><a href="http://stackoverflow.com/questions/26082414/make-app-appear-as-ios-8-suggested-app-at-lockscreen/26676020#26676020" target="_blank" rel="noopener">Make app appear as iOS 8 Suggested App at lockscreen</a><br><a href="http://stackoverflow.com/questions/25897219/can-i-get-my-ios-app-to-appear-on-the-lower-left-corner-of-the-lock-screen/25898890#25898890" target="_blank" rel="noopener">Can I get my iOS app to appear on the lower left corner of the lock screen?</a><br><a href="https://www.zhihu.com/question/26653964" target="_blank" rel="noopener">为什么 iOS 8 锁屏界面的左下角经常会出现某个应用的小图标？</a><br><a href="https://www.v2ex.com/t/142320" target="_blank" rel="noopener">关于 IOS8 锁屏左下方出现的 APP ICON</a> </p>
+<p><br></p>
+<p>转载请注明：<a href="http://baixin" target="_blank" rel="noopener">潘柏信的博客</a> » <a href="http://baixin.io/2016/09/iOSLowerLeftAppicon/" target="_blank" rel="noopener">点击阅读原文</a>     </p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#结论：有三种情况导致设备的左下角出现灰色的-App-icon"><span class="toc-text">结论：有三种情况导致设备的左下角出现灰色的 App icon</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、AppStore根据地点对App-推荐"><span class="toc-text">1、AppStore根据地点对App 推荐</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、App实现了handoff功能"><span class="toc-text">2、App实现了handoff功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、App内有iBeacon信号接收功能，App被iBeacon信号唤醒"><span class="toc-text">3、App内有iBeacon信号接收功能，App被iBeacon信号唤醒</span></a></li></ol></li></ol>
+  </div>
+</aside>
   
-    
-    <div class="timeline-item">
-      <time>2019-03-14</time>
-      <a target="_self" href="/passages/2016-06-12-HEXO_Advanced/">HEXO进阶</a>
-    </div>
+    <aside class="passage-copyright">
+      <div>本文作者: dulinyu</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://yoursite.com/passages/2016-09-23-iOSLowerLeftAppicon/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
   
-    
-    <div class="timeline-item">
-      <time>2019-03-14</time>
-      <a target="_self" href="/passages/2016-04-02-CocoaPod_Use/"></a>
-    </div>
   
+    <div class="passage-tags">
+     
+      <a href="/tags/iOS/"><i class="fa fa-tags"></i>iOS</a>
     
-    <div class="timeline-item">
-      <time>2019-03-14</time>
-      <a target="_self" href="/passages/2015-08-25-HEXO搭建个人博客/"></a>
-    </div>
-  
-    
-    <div class="timeline-item">
-      <time>2019-03-04</time>
-      <a target="_self" href="/passages/hello-world/">Hello World</a>
     </div>
   
 </div>
+
     </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
     
     <div class="site-footer-wrapper">
   <footer class="site-footer">
@@ -295,19 +355,19 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2016-10-14-jekyll_tutorials1/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2016-08-04-PythonTestAutomationiOS/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
   <div class="bottom-bar-right">
-    <a href="javascript:void(0);" data-enable="false" id="site-toc-show-btn">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
       <i class="fa fa-bars"></i>
     </a>
     
-      <a href="javascript:void(0);" data-enable="false">
+      <a href="#site-comment" data-enable="true">
         <i class="fa fa-commenting"></i>
       </a>
     

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="Dong Yuanxin">
+  
+  
+  <title>HEXO进阶 | Hexo</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="博客,">
+  
+
+  
+  <meta name="description" content="张渡林的小站">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2018-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Dong Yuanxin",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">GODBMW</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 左手代码，右手诗集</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/dongyuanxin/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-03-14
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    HEXO进阶
+  </h1>
+  
+  <article class="passage-article">
+    <p>HEXO接近是最近有一些朋友提出的问题，然后我做了总结，如果你也在使用HEXO，不妨看看，应该会有些帮助。</p>
+<ul>
+<li>1、博客部署样式出问题了怎么办？</li>
+<li>2、电脑重装或者误删了本地博客怎么办？</li>
+<li>3、想使用两台电脑写博客怎么办？</li>
+<li>4、为何使用百度搜不到我的博客？</li>
+</ul>
+<h3 id="使用Jekyll解决前三个问题。"><a href="#使用Jekyll解决前三个问题。" class="headerlink" title="使用Jekyll解决前三个问题。"></a>使用Jekyll解决前三个问题。</h3><p>不得不说 <code>Jekyll</code> 确实可以解决我上面三个问题, 因为 <code>Jekyll</code> 是直接把Markdown格式的文章直接放在github仓库里的, 相当于直接用git来管理博客了, <code>Github</code> 官方也很推荐 <code>Jekyll</code> 。 你可以先看下 <code>Jekyll</code> 搭建博客的<a href="voyagelab.github.io">voyagelab</a>, <a href="https://github.com/voyagelab/voyagelab.github.io" target="_blank" rel="noopener">github地址</a>, 当然了这只是很普通的, Jekyll 也有很多主题可以选择的, 更详细的请看<a href="http://jekyll.bootcss.com/" target="_blank" rel="noopener">Jekyll中文文档</a>、<a href="https://jekyllrb.com/" target="_blank" rel="noopener">Jekyll英文文档</a>、<a href="http://jekyllthemes.org/" target="_blank" rel="noopener">Jekyll主题列表</a>。<br>在 <code>Jekyll</code> 上逛了一个星期的我又回到了 <code>Hexo</code> , 发现 目前 <code>Jekyll</code> 对主题和一些插件的支持相对 <code>Hexo</code> 来说, 没那么友好, 可能有一些其它的方法只是我没找到而已,关于 <code>Jekyll</code> 搭建博客就介绍到这, 如果有问题的话可以评论, 或者联系我。</p>
+<h3 id="使用Hexo解决上面前三个问题"><a href="#使用Hexo解决上面前三个问题" class="headerlink" title="使用Hexo解决上面前三个问题"></a>使用Hexo解决上面前三个问题</h3><p>是的, 我大<code>Hexo</code>同样可以解决上面三个问题, 那就是使用git。关于如何使用 <code>Hexo</code> 搭建博客请看我另一篇文章<a href="http://www.baixin.io/2015/08/25/HEXO%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" target="_blank" rel="noopener">HEXO搭建个人博客</a>, 如果搭建的过程中出现了问题, 我们可以交流交流。现在我假设你已经能基本使用 <code>Hexo</code> 了, 接下来就看看如何来管理博客。</p>
+<h2 id="使用git管理博客"><a href="#使用git管理博客" class="headerlink" title="使用git管理博客"></a>使用git管理博客</h2><p><a href="https://github.com/leopardpan/Blog-Growing" target="_blank" rel="noopener">Blog-Growing</a>是我管理博客的仓库地址。结构大致是:</p>
+<blockquote>
+<p>– Blog-Growing<br>　　|– .git<br>　　|– .gitignore<br>　　|– Hexo<br>　　　　|   ..<br>　　　　|   ..<br>　　　　|   整个博客的配置信息    </p>
+</blockquote>
+<p>你可以把我的的<a href="https://github.com/leopardpan/Blog-Growing" target="_blank" rel="noopener">Blog-Growing</a> clone下来, 看看一些基本配置是怎么配置的。需要提醒的是, <code>要把主题下的.git给删除掉</code> , 当然了你也可以使用 <code>git submodule</code> 来管理, 具体的管理方法我这里就不做多的介绍了, 想了解的话可以私信我。<br>上面的过程基本做完后, 怎么来解决我开篇提的前三个问题了。</p>
+<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现:"></a>具体实现:</h3><p><strong>一：家里电脑使用博客</strong><br>　　建立git远端仓库管理博客,并使用家里的电脑把本地博客的配置推送到远端仓库。<br><strong>二：公司电脑使用博客</strong><br>　　到了公司只需要执行<code>sudo npm install -g hexo</code>,然后cd到你的博客目录下,如我cd 到Hexo目录下, 然后执行 <code>hexo server</code> 就可以在本地预览博客了。<br><strong>三：使用Git保存</strong><br>　　修改好博客后记得先使用git来提交下, 即使下次把博客的样式修改坏了, 也可以使用 <code>git reset --hard</code> 来回退。如: 我cd 到 <code>Blog-Growing</code> 目录下使用git提交。<br><strong>四：博客提交</strong><br>　　1、修改好的博客使用 <code>hexo d</code> 展示到博客页上。<br>　　2、git push 整个本地博客。    </p>
+<p><strong>提示:</strong> 在这里 <code>git</code> 仅仅只是用户做博客的版本管理的, 博客的样式修改、基本部署还是使用 <code>hexo</code> 来操作的。</p>
+<h2 id="让百度能搜索到你的博客"><a href="#让百度能搜索到你的博客" class="headerlink" title="让百度能搜索到你的博客"></a>让百度能搜索到你的博客</h2><h3 id="为什么要使用百度搜索？"><a href="#为什么要使用百度搜索？" class="headerlink" title="为什么要使用百度搜索？"></a>为什么要使用百度搜索？</h3><p>　　有人可能会说作为一个开发人员, 你不会用 <code>Google</code> 啊。 是的, Google是能搜到我们搭建在 <code>Github Page</code> 的博客, 会用<code>Google</code> 也是一个开发人员必备技能之一。但是, 我们生活在天朝, 所以百度还是总有会用到的时候, 或者是你想让更多的天朝人能搜到你。</p>
+<h3 id="为什么使用百度搜索不到-Github-Page-上的博客？"><a href="#为什么使用百度搜索不到-Github-Page-上的博客？" class="headerlink" title="为什么使用百度搜索不到 Github Page 上的博客？"></a>为什么使用百度搜索不到 Github Page 上的博客？</h3><p>有人联系过 Github Support 部门 , 给出大致的意思就是: 百度爬虫爬得太猛烈，已经对很多 Github 用户造成了问题。所以 Github 将禁止百度爬虫的爬取。    </p>
+<h3 id="如何让百度能搜索你的博客"><a href="#如何让百度能搜索你的博客" class="headerlink" title="如何让百度能搜索你的博客?"></a>如何让百度能搜索你的博客?</h3><p>　　根据上面说的, 目前发现只是Github Page禁止了百度搜索, 所以让百度能搜索到你的博客还是有一些方法的。例如:</p>
+<ul>
+<li>自己搞个VPS,博客部署在VPS上。</li>
+<li>博客部署 <code>Coding.net</code> 上, <code>GitCafe</code>已经合并到 <code>Coding</code> 。<br>我使用的是第二种方法, 博客部署在 <code>Coding.net</code> 上也相对简单些。</li>
+</ul>
+<h4 id="在Coding上部署你的博客。"><a href="#在Coding上部署你的博客。" class="headerlink" title="在Coding上部署你的博客。"></a>在Coding上部署你的博客。</h4><p>　　Coding同样支持Hexo、Jekyll等博客的部署, Coding 跟Github还是挺像的,而且是中文。 同样的在Coding里面建一个项目,项目名字跟你的用户名一样,这里我就不啰嗦了, 说几个需要注意的地方:<br><strong>注意一:</strong><br>　　在<code>Coding Page</code> 上部署博客,需要把博客推送到<code>coding-pages</code> 分支上, 分支名字是固定的。<br><strong>注意二:</strong><br>　　<code>Coding Page</code> 不支持自定义CNAME, 你需要点击到Page模块,然后添加一个域名来绑定。   </p>
+<p>更详细的请看<a href="https://coding.net/help/doc/pages/index.html" target="_blank" rel="noopener">Coding Pages 官网介绍</a>.     </p>
+<p>参考文章:<br><a href="http://jerryzou.com/posts/feasibility-of-allowing-baiduSpider-for-Github-Pages/" target="_blank" rel="noopener">解决 Github Pages 禁止百度爬虫的方法与可行性分析</a></p>
+<p><br></p>
+<p>转载请注明：<a href="http://baixin" target="_blank" rel="noopener">潘柏信的博客</a> » <a href="http://baixin.io/2016/06/HEXO_Advanced/" target="_blank" rel="noopener">点击阅读原文</a></p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用Jekyll解决前三个问题。"><span class="toc-text">使用Jekyll解决前三个问题。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用Hexo解决上面前三个问题"><span class="toc-text">使用Hexo解决上面前三个问题</span></a></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#使用git管理博客"><span class="toc-text">使用git管理博客</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#具体实现"><span class="toc-text">具体实现:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#让百度能搜索到你的博客"><span class="toc-text">让百度能搜索到你的博客</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么要使用百度搜索？"><span class="toc-text">为什么要使用百度搜索？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么使用百度搜索不到-Github-Page-上的博客？"><span class="toc-text">为什么使用百度搜索不到 Github Page 上的博客？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何让百度能搜索你的博客"><span class="toc-text">如何让百度能搜索你的博客?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#在Coding上部署你的博客。"><span class="toc-text">在Coding上部署你的博客。</span></a></li></ol></li></ol>
+  </li></div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: dulinyu</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://yoursite.com/passages/2016-06-12-HEXO_Advanced/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/博客/"><i class="fa fa-tags"></i>博客</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">博客推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">系列教程</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank">webpack4系列教程</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/design-patterns/" target="_blank">设计模式手册</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">抓到我</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://juejin.im/user/5b91fcf06fb9a05d3c7fd4a5" target="_blank">掘金</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://segmentfault.com/" target="_blank">思否</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: yuanxin.me@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/wechat.png" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/alipay.png" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2016-07-05-MachineLearning_introduce/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2016-04-02-CocoaPod_Use/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>

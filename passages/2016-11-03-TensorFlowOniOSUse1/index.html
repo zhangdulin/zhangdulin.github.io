@@ -6,12 +6,12 @@
   <meta name="author" content="Dong Yuanxin">
   
   
-  <title>归档: 2019/3 | Hexo</title>
+  <title>TensorFlow 在 iOS 平台上的使用(一) | Hexo</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Hexo, Theme-AD">
+    <meta name="keywords" content="机器学习,">
   
 
   
@@ -40,7 +40,7 @@
     welcome: {"enable":true,"interval":30},
     start_time: "2018-02-10",
     passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
-    is_post: false,
+    is_post: true,
     lock: false,
     author: "Dong Yuanxin",
     share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
@@ -158,43 +158,88 @@
 </nav>
 <div id="site-process"></div>
     <main>
-      <div class="timeline">
-  <h2 class="timeline-title">归档: 23篇</h2>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2016-11-03
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    TensorFlow 在 iOS 平台上的使用(一)
+  </h1>
   
-    
-      <h3 class="timeline-subtitle">2019</h3>
-    
-    <div class="timeline-item">
-      <time>2019-03-14</time>
-      <a target="_self" href="/passages/2016-07-05-MachineLearning_introduce/"></a>
-    </div>
+  <article class="passage-article">
+    <p>　　距离上次使用 TensorFlow 在iOS平台上做的小 Demo，已经过了四个月了，今天忽然想再看看,发现 Demo 已经不见了，我只能从头在编一次，这次发现编译 iOS 库，简单多了。</p>
+<p>　　tensorflow <a href="https://github.com/tensorflow/tensorflow/archive/master.zip" target="_blank" rel="noopener">下载地址</a>，tensorflow 最近提交的时间：2016-11-03，commit：<code>7b7c02de56e013482b5fe5ab05e576dc98fe5742</code> 。</p>
+<p>　　下载完成后打开文件，找到目录 <code>tensorflow-master/tensorflow/contrib/ios_examples</code> 你会发现目录下有三个项目和一个 README.md 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">benchmark 、 camera 、 simple 、README.md</span><br></pre></td></tr></table></figure>
+<h3 id="如果你发现项目无法运行，请看这里"><a href="#如果你发现项目无法运行，请看这里" class="headerlink" title="如果你发现项目无法运行，请看这里"></a>如果你发现项目无法运行，请看这里</h3><p>　　对于任何项目我们首先打开的应该是 README.md ，里面一般情况都会有介绍如何使用这个项目，tensorflow 也不会例外。README 开头就说了，这个目录里有如何在 iOS 平台上使用 tensorflow 的例子，但是需要注意几点：</p>
+<ul>
+<li>你的 Xcode 版本必须是 7.3 或更高版本，并且有安装 command-line 工具 。</li>
+<li>项目(Examples) 里必须包含一个静态库：<code>libtensorflow-core.a</code> 。</li>
+<li>下载 <a href="https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip" target="_blank" rel="noopener">Inception v1</a>，解压后将 label 和 graph 放在 simple 和 camera 的项目中。</li>
+</ul>
+<h3 id="camera-项目的使用"><a href="#camera-项目的使用" class="headerlink" title="camera 项目的使用"></a>camera 项目的使用</h3><p>　　camera 项目在 tensorflow-master/tensorflow/contrib/ios_examples 目录下，如果你是直接打开 camera 项目，编译你会发现报错缺少 imagenet_comp_graph_label_strings.txt 和 tensorflow_inception_graph.pb 两个文件，这两个文件上面已经说到了下载 <a href="https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip" target="_blank" rel="noopener">Inception v1</a> 解压得到。现在还差 静态库：<code>libtensorflow-core.a</code> ，这个需要我们自己编译。</p>
+<h4 id="编译静态库：libtensorflow-core-a"><a href="#编译静态库：libtensorflow-core-a" class="headerlink" title="编译静态库：libtensorflow-core.a"></a>编译静态库：libtensorflow-core.a</h4><p>进入目录：tensorflow-master/tensorflow/contrib/makefile，你可以看到一大堆 .sh 结尾的文件，找到 build_all_ios.sh ，Mac 上可以直接在 termina（终端）上运行命令编译</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sh build_all_ios.sh</span><br></pre></td></tr></table></figure>
+<p>这个编译的过程是很漫长的，一般在一个小时左右。也有可能你在编译的过程中会遇到问题，这次我只遇到一个问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">configure.ac:30: error: required file &apos;build-aux/ltmain.sh&apos; not found</span><br><span class="line">configure.ac:24: installing &apos;build-aux/missing&apos;</span><br><span class="line">Makefile.am: installing &apos;build-aux/depcomp&apos;</span><br><span class="line">parallel-tests: installing &apos;build-aux/test-driver&apos;</span><br><span class="line">autoreconf: automake failed with exit status: 1</span><br></pre></td></tr></table></figure>
+<p>解决方法是：先卸载 libtool 在重新安装，<code>brew uninstall libtool</code> &amp;&amp; <code>brew install libtool</code></p>
+<p>如果你还遇到了其它问题，可以看看我之前的一片文章 <a href="http://baixin.io/2016/07/iOSMachineLearning_TensorFlow/" target="_blank" rel="noopener">iOS开发迎来机器学习的春天—TensorFlow</a> ，或者是直接去 tensorflow 的 <a href="https://github.com/tensorflow/tensorflow/issues" target="_blank" rel="noopener">Issues</a> 里面找。 </p>
+<p>一个小时后。。。　如果编译没出问题，你可以在目录　<code>tensorflow-master/tensorflow/contrib/makefile／gen/lib</code> 下找到一个静态库：<code>libtensorflow-core.a</code> ，把这个静态库拷贝到 camera 项目中，然后编译运行。</p>
+<p><br><br>转载请注明：<a href="http://baixin" target="_blank" rel="noopener">潘柏信的博客</a> » <a href>点击阅读原文</a>     </p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#如果你发现项目无法运行，请看这里"><span class="toc-text">如果你发现项目无法运行，请看这里</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#camera-项目的使用"><span class="toc-text">camera 项目的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#编译静态库：libtensorflow-core-a"><span class="toc-text">编译静态库：libtensorflow-core.a</span></a></li></ol></li></ol>
+  </div>
+</aside>
   
-    
-    <div class="timeline-item">
-      <time>2019-03-14</time>
-      <a target="_self" href="/passages/2016-06-12-HEXO_Advanced/">HEXO进阶</a>
-    </div>
+    <aside class="passage-copyright">
+      <div>本文作者: dulinyu</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://yoursite.com/passages/2016-11-03-TensorFlowOniOSUse1/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
   
-    
-    <div class="timeline-item">
-      <time>2019-03-14</time>
-      <a target="_self" href="/passages/2016-04-02-CocoaPod_Use/"></a>
-    </div>
   
+    <div class="passage-tags">
+     
+      <a href="/tags/机器学习/"><i class="fa fa-tags"></i>机器学习</a>
     
-    <div class="timeline-item">
-      <time>2019-03-14</time>
-      <a target="_self" href="/passages/2015-08-25-HEXO搭建个人博客/"></a>
-    </div>
-  
-    
-    <div class="timeline-item">
-      <time>2019-03-04</time>
-      <a target="_self" href="/passages/hello-world/">Hello World</a>
     </div>
   
 </div>
+
     </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
     
     <div class="site-footer-wrapper">
   <footer class="site-footer">
@@ -295,19 +340,19 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2016-11-16-macTips/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2016-10-25-Xcode8/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
   <div class="bottom-bar-right">
-    <a href="javascript:void(0);" data-enable="false" id="site-toc-show-btn">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
       <i class="fa fa-bars"></i>
     </a>
     
-      <a href="javascript:void(0);" data-enable="false">
+      <a href="#site-comment" data-enable="true">
         <i class="fa fa-commenting"></i>
       </a>
     
