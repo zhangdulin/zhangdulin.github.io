@@ -462,9 +462,10 @@ main {
 
 .home-article-wrapper {
   display: block;
-  min-height: 330px;
+  min-height: 150px;
   margin: 30px 0;
-  border-radius: 10px; }
+  border-radius: 10px; 
+}
 .home-article-cover {
   position: absolute;
   top: 0;
