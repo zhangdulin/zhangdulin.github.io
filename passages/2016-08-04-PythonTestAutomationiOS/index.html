@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="Dong Yuanxin">
+  
+  
+  <title>Python自动化测试iOS项目 | Hexo</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="python,">
+  
+
+  
+  <meta name="description" content="张渡林的小站">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2018-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Dong Yuanxin",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">dulinyu</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 左手代码，右手诗集</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/dongyuanxin/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2016-08-04
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Python自动化测试iOS项目
+  </h1>
+  
+  <article class="passage-article">
+    <p>作为一个开发人员，为了保证自己的代码的健壮，写单元测试是必不可少的环节，然而最痛快的是每天去手动跑一遍所有的case。那么什么能帮我们解决这些繁琐的操作呢，大家应该会想到自动化测试脚本了，是的，我们可以借助脚本来完成全自动化测试，下面是我列的每天脚本自动执行流程：       </p>
+<blockquote>
+<ul>
+<li>1、<code>pull</code> git仓库里面的最新代码到本地。    </li>
+<li>2、然后打包成<code>App</code>。   </li>
+<li>3、安装到模拟器上。    </li>
+<li>4、运行App，执行单元测试，生成测试数据并保存到本地。    </li>
+<li>5、脚本读取测试数据，邮件发送给相关人员。    </li>
+</ul>
+</blockquote>
+<p>当这些全自动化后，可以大大减少开发人员的维护成本，即使每次项目里面有新增模块后，增加测试case就行了，下面会介绍自动测试这5步具体怎么去执行，整个脚本是使用Python写的，代码很少功能也很简单，但这已经可以帮我们完成基本的自动化测试了，这就是脚本的强大之处，选择Pyhton纯属个人喜好，最近也在学习Python，当然了最终使用什么语言看你自己。   </p>
+<h3 id="python执行shell命令完成测试"><a href="#python执行shell命令完成测试" class="headerlink" title="python执行shell命令完成测试"></a>python执行shell命令完成测试</h3><p>首先确认本机上安装了<code>git</code> 和 <code>python</code> 。<br>脚本判断本地是否存在项目，不存在则使用命令 <code>git clone ...</code> ，存在则使用命令 <code>git pull ...</code> 。<br>这些在Linux的命令都可以使用脚本来完成的，python的 <code>os.popen()</code> 方法 就是可以在Linux上执行shell命令。<br><strong>例如：</strong>  把下面这段代码添加到一个 test.py 的文件里，然后在终端上执行 <code>python test.py</code> 命令你就会看到，你的当前目录下正在下载我的博客了。</p>
+<pre><code>import os
+
+os.popen(&apos;git clone https://github.com/leopardpan/leopardpan.github.io.git&apos;)   
+
+</code></pre><p>git pull 。。。 更新代码也是一样的。</p>
+<p>接下来的打包、安装、运行都是使用python执行shell命令      </p>
+<p><strong>把iOS项目打包成App，下面的 <code>Demo</code> 是项目的名字</strong>              </p>
+<blockquote>
+<ul>
+<li>os.popen(‘xcodebuild -project Demo.xcodeproj -target Demo -configuration Debug -sdk iphonesimulator’)     </li>
+</ul>
+</blockquote>
+<p>这行脚本运行完成后，你就会发现同会生成一个 <code>build</code> 的文件夹。<br>Debug参数表示现在是Debug模式，如果Xcode里面改成Release了，这里需要改成Release。<br>xcodebuild 命令是 Xcode Command Line Tools 的一部分。通过调用这个命令，可以完成 iOS 工程的编译，打包和签名过程。可以使用 xcodebuild –help 来看看具体有哪些功能。 </p>
+<p><strong>打开iOS模拟器，这里运行的是<code>iPhone 6 Plus</code> 你也可以换成其它型号的模拟器</strong>      </p>
+<blockquote>
+<ul>
+<li>os.popen(‘xcrun instruments -w “iPhone 6 Plus”‘)    </li>
+</ul>
+</blockquote>
+<p><strong>把刚才打包生成的App安装到模拟器上</strong><br>在安装之前要先卸载App,不然你运行的永远是最初安装的那个，后来安装的不会覆盖之前的，卸载App</p>
+<blockquote>
+<ul>
+<li>os.popen(‘xcrun simctl uninstall booted com.test.Demo’)</li>
+</ul>
+</blockquote>
+<p>booted 后面接的是 <code>Bundle Identifier</code>，我的是 com.test.Demo，然后再安装App     </p>
+<blockquote>
+<ul>
+<li>os.popen(‘xcrun simctl install booted build/Debug-iphonesimulator/Demo.app ‘)    </li>
+</ul>
+</blockquote>
+<p>booted 后面接的是.app的路径，我打包的时候的是Debug，所以这个的文件夹名称是Debug-iphonesimulator。</p>
+<p><strong>在模拟器里运行App</strong>      </p>
+<blockquote>
+<ul>
+<li>os.popen(‘xcrun simctl launch booted com.test.Demo’)</li>
+</ul>
+</blockquote>
+<p>booted 后面接的是 <code>Bundle Identifier</code>，我的是 com.test.Demo。</p>
+<p>到目前为止，你就会发现你的项目已经运行起来了，你可以在项目是Debug模式下一启动就执行单元测试，然后把对应的测试数据保存到本地为data.json。然后在使用python脚本读取测试文件的数据，最终使用邮件发送给相关人员，pyhton读取数据很简单，一行代码就行</p>
+<blockquote>
+<ul>
+<li>data = open(‘data.json’).read() </li>
+</ul>
+</blockquote>
+<p>data里面就是json字符串，为了脚本操作简单，我在存储的时候直接把json格式的转成了字符串类型。</p>
+<h3 id="python发送邮件"><a href="#python发送邮件" class="headerlink" title="python发送邮件"></a>python发送邮件</h3><p>我使用的是SMTP进行邮件发送的，SMTP是发送邮件的协议，Python内置对SMTP的支持，可以发送纯文本邮件、HTML邮件以及带附件的邮件。     </p>
+<p>Python对SMTP支持有smtplib和email两个模块，email负责构造邮件，smtplib负责发送邮件，具体代码如下： </p>
+<pre><code>from email import encoders
+from email.header import Header
+from email.mime.text import MIMEText
+from email.utils import parseaddr, formataddr
+import smtplib
+
+def format_addr(self,s):
+    name, addr = parseaddr(s)
+    return formataddr(( \
+        Header(name, &apos;utf-8&apos;).encode(), \
+        addr.encode(&apos;utf-8&apos;) if isinstance(addr, unicode) else addr))
+
+def send_mail(self, mail, message, title):
+    from_addr = &apos;leopardpan@163.com&apos;
+    password = &apos;&apos;
+    to_addr = mail
+    smtp_server = &apos;smtp.163.com&apos;
+
+    msg = MIMEText(message, &apos;plain&apos;, &apos;utf-8&apos;)
+    msg[&apos;From&apos;] = self.format_addr(u&apos;自动化测试邮件 &lt;%s&gt;&apos; % from_addr)
+    msg[&apos;To&apos;] = self.format_addr(u&apos;管理员 &lt;%s&gt;&apos; % to_addr)
+    msg[&apos;Subject&apos;] = Header(title, &apos;utf-8&apos;).encode()
+
+    server = smtplib.SMTP(smtp_server, 25)
+    server.set_debuglevel(1)
+    server.login(from_addr, password)
+    server.sendmail(from_addr, [to_addr], msg.as_string())
+    server.quit()
+
+send_mail(&apos;leopardpan@icloud.com&apos;,&apos;正文&apos;,&apos;标题&apos;)
+</code></pre><p>from_addr是发送方的邮箱地址，password是开通SMTP时输入的密码<br>smtp_server是smtp的服务，如果你的from_addr是gamil.com，那么就要写成smtp_server = ‘smtp.gmail.com’ 了。</p>
+<p>方法 send_mail(self, mail, message, title): 有四个参数，第一个不用传，第二个参数是收信人的邮箱，第三个是邮件的正文，第四个是邮件的标题，方法调用格式： <code>send_mail(&#39;leopardpan@icloud.com&#39;,&#39;正文&#39;,&#39;标题&#39;)</code></p>
+<p>注意：发送方的邮箱必须要开通SMTP功能才行，否则会报错</p>
+<blockquote>
+<ul>
+<li>SMTPSenderRefused: (550, ‘User has no permission’, <a href="mailto:&#39;leopardpan@163.com" target="_blank" rel="noopener">&#39;leopardpan@163.com</a>‘)</li>
+</ul>
+</blockquote>
+<p>163的SMTP开通，需要你登录网易邮箱，然后点击顶部的设置就会出现<code>POP3/SMTP/IMAP</code>，点击之后，勾选选择开启，这个时候需要你输入密码，记住这个密码就是上面代码中的<code>password</code>，如果你都完成的话，你把上面的代码拷贝出现，把邮箱修改成你自己的，使用 pyhton 运行一下吧。</p>
+<p>上面的几个流程结合起来就可以实现一个简单的自动化测试了，如果你有什么建议和意见欢迎讨论。</p>
+<p>参考链接：<br><a href="http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386832745198026a685614e7462fb57dbf733cc9f3ad000" target="_blank" rel="noopener">SMTP发送邮件</a>     </p>
+<p><br></p>
+<p>转载请注明：<a href="http://baixin" target="_blank" rel="noopener">潘柏信的博客</a> » <a href="http://baixin.io/2016/08/PythonTestAutomationiOS/" target="_blank" rel="noopener">点击阅读原文</a> </p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#python执行shell命令完成测试"><span class="toc-text">python执行shell命令完成测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python发送邮件"><span class="toc-text">python发送邮件</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: dulinyu</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://yoursite.com/passages/2016-08-04-PythonTestAutomationiOS/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/python/"><i class="fa fa-tags"></i>python</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">博客推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="http://www.zhangdulin.com/" target="_blank">dulinyu</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">系列教程</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank">webpack4系列教程</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/design-patterns/" target="_blank">设计模式手册</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">抓到我</h5>
+        
+          <span class="site-footer-item">
+            <a href target="_self">掘金</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href target="_self">思否</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: zhangdulin@outlook.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/wechat.png" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/alipay.png" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2016-09-23-iOSLowerLeftAppicon/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2016-07-15-Codeless/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>
